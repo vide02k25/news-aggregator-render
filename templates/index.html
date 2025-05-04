@@ -12,7 +12,7 @@
                         {% if article.description %}
                             <p>{{ article.description | truncate(150) }}</p>
                         {% endif %}
-                        <p>Source: {{ article.source_name or "N/A" }} | Published: {{ article.published_at.strftime("%Y-%m-%d %H:%M") if article.published_at else "N/A" }} UTC</p>
+                        <p>Source: {% if article.source_url %}<a href="{{ article.source_url }}" target="_blank" rel="noopener noreferrer">{{ article.source_name or "N/A" }}</a>{% else %}{{ article.source_name or "N/A" }}{% endif %} | Published: {{ article.published_at.strftime("%Y-%m-%d %H:%M") if article.published_at else "N/A" }} UTC</p>
                         {% if article.url %}
                             <p><a href="{{ article.url }}" target="_blank" rel="noopener noreferrer">Read Original Article</a></p>
                         {% endif %}
