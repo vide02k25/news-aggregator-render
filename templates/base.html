@@ -170,7 +170,7 @@
 
             {# Manual Update Button #}
             <div class="update-button-container">
-                <form action="{{ url_for(\'main.trigger_update\') }}" method="post">
+               <form action="{{ url_for('main.trigger_update') }}" method="post">
                     <button type="submit" class="update-button">Fetch Latest News</button>
                 </form>
             </div>
