@@ -1,33 +1,25 @@
 {% extends "base.html" %}
-
 {% block title %}{{ article.title if article else "Article Not Found" }}{% endblock %}
-
 {% block content %}
-    <a href="{{ url_for("main.index") }}" class="back-link">&laquo; Back to Headlines</a>
-
+    <p><a href="{{ url_for('main.index') }}">« Back to Headlines</a></p>
     {% if article %}
-        <article>
-            <h2>{{ article.title }}</h2>
-            <p class="article-meta">
-                Source: {% if article.source_url %}<a href="{{ article.source_url }}" target="_blank">{{ article.source_name or "N/A" }}</a>{% else %}{{ article.source_name or "N/A" }}{% endif %} | Published: {{ article.published_at.strftime("%Y-%m-%d %H:%M") if article.published_at else "N/A" }} UTC
-            </p>
-            <div class="article-content">
-                {% if article.image_url %}
-                    <img src="{{ article.image_url }}" alt="Article image">
-                {% endif %}
-                {% if article.content %}
-                    <p>{{ article.content | safe }}</p> {# Use safe filter if content contains HTML, otherwise remove #}
-                {% elif article.description %}
-                    <p>{{ article.description }}</p>
-                {% else %}
-                    <p>Full content not available. View the original article for more details.</p>
-                {% endif %}
-                <p><a href=\"{{ article.url }}\" target=\"_blank\">Read original article &raquo;</a></p>
-            </div>
-        </article>
+        <h1>{{ article.title }}</h1>
+        <p>Source: {% if article.source_url %}<a href="{{ article.source_url }}" target="_blank" rel="noopener noreferrer">{{ article.source_name or "N/A" }}</a>{% else %}{{ article.source_name or "N/A" }}{% endif %} | Published: {{ article.published_at.strftime("%Y-%m-%d %H:%M") if article.published_at else "N/A" }} UTC</p>
+        {% if article.image_url %}
+            <img src="{{ article.image_url }}" alt="{{ article.title }}" style="max-width: 100%;">
+        {% endif %}
+        {% if article.content %}
+            <p>{{ article.content | safe }}</p>
+        {% elif article.description %}
+            <p>{{ article.description }}</p>
+        {% else %}
+            <p>Full content not available. View the original article for more details.</p>
+        {% endif %}
+        {% if article.url %}
+            <p><a href="{{ article.url }}" target="_blank" rel="noopener noreferrer">Read original article »</a></p>
+        {% endif %}
     {% else %}
-        <h2>Article Not Found</h2>
+        <p>Article Not Found</p>
         <p>The article you are looking for does not exist or could not be retrieved.</p>
     {% endif %}
 {% endblock %}
-
