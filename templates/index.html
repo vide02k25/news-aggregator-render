@@ -1,31 +1,26 @@
 {% extends "base.html" %}
-
 {% block title %}Latest News Headlines{% endblock %}
-
 {% block content %}
-    <h2>Today\s Headlines</h2>
-
+    <h1>Today's Headlines</h1>
     {% if articles_by_category %}
         {% for category, articles in articles_by_category.items() %}
-            <section class="category-section">
-                <h2 class="category-title">{{ category }}</h2>
+            <h2>{{ category }}</h2>
+            <ul>
                 {% for article in articles %}
-                    <article class="article-item">
+                    <li>
                         <h3><a href="{{ url_for('main.article_detail', article_id=article.id) }}">{{ article.title }}</a></h3>
                         {% if article.description %}
                             <p>{{ article.description | truncate(150) }}</p>
                         {% endif %}
-                        <p class="article-meta">
-                            Source: {{ article.source_name or "N/A" }} | Published: {{ article.published_at.strftime("%Y-%m-%d %H:%M") if article.published_at else "N/A" }} UTC
-                        </p>
-                    </article>
-                {% else %}
-                    <p>No articles found for this category recently.</p>
+                        <p>Source: {{ article.source_name or "N/A" }} | Published: {{ article.published_at.strftime("%Y-%m-%d %H:%M") if article.published_at else "N/A" }} UTC</p>
+                        {% if article.url %}
+                            <p><a href="{{ article.url }}" target="_blank" rel="noopener noreferrer">Read Original Article</a></p>
+                        {% endif %}
+                    </li>
                 {% endfor %}
-            </section>
+            </ul>
         {% endfor %}
     {% else %}
         <p>No news articles found. Please check back later or try running the fetch process.</p>
     {% endif %}
 {% endblock %}
-
