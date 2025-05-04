@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}News Aggregator{% endblock %}</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            position: relative; /* For positioning the button */
+        }
+        header h1 {
+            margin: 0;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        main {
+            padding: 20px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 0.9em;
+            color: #777;
+            border-top: 1px solid #eee;
+        }
+        .update-button-container {
+            text-align: center; /* Center button */
+            margin-bottom: 20px; /* Add space below button */
+        }
+        .update-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .update-button:hover {
+            background-color: #0056b3;
+        }
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+        .flash-messages li {
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .flash-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .flash-info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .flash-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .category-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .category-section:last-child {
+            border-bottom: none;
+        }
+        .category-title {
+            color: #333;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            text-transform: capitalize;
+        }
+        .article-item {
+            margin-bottom: 15px;
+        }
+        .article-item h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2em;
+        }
+        .article-item h3 a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .article-item h3 a:hover {
+            text-decoration: underline;
+        }
+        .article-item p {
+            margin: 0 0 5px 0;
+            color: #555;
+            font-size: 0.95em;
+        }
+        .article-meta {
+            font-size: 0.85em;
+            color: #777;
+        }
+        .article-content {
+            margin-top: 20px;
+        }
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 0 10px;
+            }
+            main {
+                padding: 15px;
+            }
+            .update-button-container {
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="{{ url_for('main.index') }}" style="color: #fff; text-decoration: none;">Daily News Headlines</a></h1>
+    </header>
+    <div class="container">
+        <main>
+            {# Flash Messages #}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <ul class="flash-messages">
+                {% for category, message in messages %}
+                  <li class="flash-{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+
+            {# Manual Update Button #}
+            <div class="update-button-container">
+                <form action="{{ url_for(\'main.trigger_update\') }}" method="post">
+                    <button type="submit" class="update-button">Fetch Latest News</button>
+                </form>
+            </div>
+
+            {# Main Content Block #}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    <footer>
+        News Aggregator - Powered by Manus
+    </footer>
+</body>
+</html>
+
